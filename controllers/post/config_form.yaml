@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Post
+
+# Model Form Field configuration
+form: $/phyo/articles/models/post/fields.yaml
+
+# Model Class name
+modelClass: Phyo\Articles\Models\Post
+
+# Default redirect location
+defaultRedirect: phyo/articles/post
+
+# Create page
+create:
+    title: Create Post
+    redirect: phyo/articles/post/update/:id
+    redirectClose: phyo/articles/post
+
+# Update page
+update:
+    title: Edit Post
+    redirect: phyo/articles/post
+    redirectClose: phyo/articles/post
+
+# Preview page
+preview:
+    title: Preview Post

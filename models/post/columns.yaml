@@ -1,0 +1,20 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    title:
+        label: Title
+        searchable: true
+    body:
+        label: Body
+        searchable: true
+    created_at:
+        label: Created Date
+        searchable: true
+
+    Author:
+        label: Author
+        relation: user
+        select: login
+        searchable: false

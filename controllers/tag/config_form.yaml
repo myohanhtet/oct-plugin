@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Tag
+
+# Model Form Field configuration
+form: $/phyo/articles/models/tag/fields.yaml
+
+# Model Class name
+modelClass: Phyo\Articles\Models\Tag
+
+# Default redirect location
+defaultRedirect: phyo/articles/tag
+
+# Create page
+create:
+    title: Create Tag
+    redirect: phyo/articles/tag/update/:id
+    redirectClose: phyo/articles/tag
+
+# Update page
+update:
+    title: Edit Tag
+    redirect: phyo/articles/tag
+    redirectClose: phyo/articles/tag
+
+# Preview page
+preview:
+    title: Preview Tag
