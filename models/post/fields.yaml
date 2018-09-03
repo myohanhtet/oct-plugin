@@ -11,22 +11,24 @@ fields:
     slug:
       label: Slug
       type: text
+      preset: title
       required: true
       span: right
-
     body:
-      label: Body Text
-      type: textarea
-      required: true
+      type: markdown
+      size: huge
+      mode: tab
     tags:
-      label: Tags
-      type: text
-      required: true
-
+      type: taglist
+      mode: relation
+      useKey: true
     created_at:
       label: Create Date
       type: datepicker
       required: true
+    user_id:
+      hidden: true
+      default: 1
 
 #    user_id:
 #      label: Author

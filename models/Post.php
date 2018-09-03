@@ -3,15 +3,20 @@
 
 use Backend\Facades\BackendAuth;
 use Backend\Models\User;
-use Illuminate\Foundation\Validation\ValidatesRequests;
+use http\Env\Request;
+use Illuminate\Support\Facades\Input;
 use Model;
+
 
 /**
  * Post Model
  */
 class Post extends Model
 {
-    use ValidatesRequests;
+    /**
+     * @var array Attribute names to encode and decode using JSON.
+     */
+    protected $jsonable = ['data'];
     /**
      * @var string The database table used by the model.
      */
@@ -49,31 +54,13 @@ class Post extends Model
         return \Backend\Models\User::lists('login','id');
     }
 
-    public $rules =
-        [
-            'title' =>  'required',
-            'public' => 'required'
-        ];
+    /**
+     * Validation rules
+     */
+    public $rules = [
+        'title' => 'required',
+        'body' => 'required'
+    ];
 
-    public static function savePost($post)
-    {
-        $input = post('Post');
-        $post->title = $input['title'];
-        $post->slug = $input['slug'];
-        $post->body = $input['body'];
-        $post->user_id = BackendAuth::getUser()->id;
-        $post->save();
 
-        $tags_id = [];
-        if ($input['tags']){
-            $tags = explode(',',$input['tags']);
-            foreach ($tags as $tag){
-                $tag_name = Tag::firstOrCreate(['name' => $tag ,'tag_slug' => $tag]);
-                $tags_id = $tag_name->id;
-            }
-        }
-        $post->tags()->sync($tags_id);
-
-        return $post;
-    }
 }

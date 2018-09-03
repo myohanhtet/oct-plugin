@@ -1,5 +1,6 @@
 <?php namespace Phyo\Articles\Controllers;
 
+use Backend\Facades\BackendAuth;
 use BackendMenu;
 use Backend\Classes\Controller;
 use October\Rain\Support\Facades\Flash;
@@ -34,7 +35,7 @@ class Post extends Controller
             return back();
         }
         $post = new \Phyo\Articles\Models\Post();
-        $post = \Phyo\Articles\Models\Post::savePost($post);
+        $post = $this->savePost($post);
 
         Flash::success('Post Saved Successfully');
 
@@ -44,14 +45,19 @@ class Post extends Controller
     public function update_onSave($recordId)
     {
         $post = \Phyo\Articles\Models\Post::findOrFail($recordId);
-        if ($this->user->hasAccess('phyo.articles.post_update')){
-            if ($this->user->id == $post->user_id ){
-                $this->savePost($post);
-                Flash::success("Post updated successfully");
-                return back();
-            }
-        }
-        Flash::error("No Permission!!");
+
+        $input = post('Post');
+        $post->title = $input['title'];
+        $post->slug  = $input['slug'];
+        $post->body  = $input['body'];
+        $post->user_id = BackendAuth::getUser()->id;
+        $post->save();
+
+
+
+  //        $this->savePost($post);
+
+        Flash::success("Updated!!");
         return back();
 
     }
@@ -73,5 +79,31 @@ class Post extends Controller
     public function formAfterDelete($model)
     {
         // Need
+    }
+
+    public function savePost($post)
+    {
+
+        $input = post('Post');
+        $post->title = $input['title'];
+        $post->slug  = $input['slug'];
+        $post->body  = $input['body'];
+        $post->user_id = BackendAuth::getUser()->id;
+        $post->save();
+
+        $tags_id = [];
+
+        if ($input['tags']){
+            $tags = $input['tags'];
+            foreach ($tags as $tag){
+                $tag_ref = \Phyo\Articles\Models\Tag::firstOrCreate(['name' => $tag ,'tag_slug' => $tag]);
+                $tags_id = $tag_ref->id;
+                $post->tags()->attach($tags_id);
+            }
+
+
+        }
+
+        return $post;
     }
 }
